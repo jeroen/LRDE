@@ -50,7 +50,7 @@ library(LRDE)
 set.seed(123)
 # 1. Simulate a count matrix (negative binomial)
 mat <- matrix(rnbinom(300, size = 5, mu = 5), nrow = 50)
-grp <- c("A", "A", "A", "B", "B", "B")
+grp <- factor(c("A", "A", "A", "B", "B", "B"))
 
 # 2. Prepare the data object
 y <- prepareDGE(mat, grp)
