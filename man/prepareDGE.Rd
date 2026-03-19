@@ -33,7 +33,6 @@ This function performs input validation.
 }
 }
 \examples{
-\dontrun{
 # Example with a matrix
 set.seed(123)
 mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
@@ -43,6 +42,5 @@ y <- prepareDGE(mat, grp)
 # Example with a SummarizedExperiment
 # se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mat))
 # y <- prepareDGE(se, grp)
-}
 
 }

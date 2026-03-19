@@ -34,6 +34,7 @@ NULL
 #' are estimated, while theta and phi are kept constant.
 #'
 #' @keywords internal
+#' @noRd
 nll_hurdle_fixed_theta_phi <- function(params, counts, groups, offset = NULL,
                                        fixed_theta_A, fixed_theta_B,
                                        fixed_phi, one_group = TRUE) {
@@ -115,7 +116,6 @@ nll_hurdle_fixed_theta_phi <- function(params, counts, groups, offset = NULL,
 #' }
 #'
 #' @examples
-#' \dontrun{
 #' set.seed(123)
 #' mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 #' grp <- c("A", "A", "A", "B", "B", "B")
@@ -123,7 +123,6 @@ nll_hurdle_fixed_theta_phi <- function(params, counts, groups, offset = NULL,
 #' y <- sizeFactorsEst(y)
 #' y <- tagwiseEst(y)
 #' y <- hurdle_LRT(y)
-#' }
 #'
 #' @export
 hurdle_LRT <- function(y){
@@ -245,7 +244,6 @@ hurdle_LRT <- function(y){
 #' }
 #'
 #' @examples
-#' \dontrun{
 #' set.seed(123)
 #' mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 #' grp <- c("A", "A", "A", "B", "B", "B")
@@ -253,7 +251,6 @@ hurdle_LRT <- function(y){
 #' y <- sizeFactorsEst(y)
 #' y <- tagwiseEst(y)
 #' y <- hurdle_Wald_Test(y)
-#' }
 #'
 #' @export
 hurdle_Wald_Test <- function(y) {

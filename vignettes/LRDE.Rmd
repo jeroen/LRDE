@@ -1,0 +1,147 @@
+---
+title: "Differential Expression Analysis with Long Read RNA-Seq Data"
+author:
+  - name: "Ziyang Liu"
+    affiliation: "University of Arizona"
+    email: "jacobleo773@gmail.com"
+  - name: "Hongxu Ding"
+    affiliation: "University of Arizona"
+    email: "hongxuding@arizona.edu"
+package: LRDE
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{LRDE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+`LRDE` implements a **Hurdle Negative Binomial (Hurdle-NB) generalized linear model (GLM)** tailored for long-read RNA-seq data. Compared to short-read technologies, long-read sequencing often involves **smaller sample sizes** and **substantial expression dropout** (i.e., excess zeros), posing challenges for standard differential expression methods.
+
+This package is designed to address these issues by combining a flexible two-part model with stabilized parameter estimation.
+
+# Statistical Methodology
+
+The core contribution of `LRDE` is the integration of a hurdle model with **empirical Bayes (EB) shrinkage**, enabling robust and stable inference across genes.
+
+## 1. Hurdle Model
+
+For each gene \( g \) and sample \( i \), the observed count \( y_{ig} \) is modeled using a two-component framework:
+
+- **Zero component:**  
+  A Bernoulli distribution models the probability of observing a structural zero (dropout).
+
+- **Count component:**  
+  Conditional on being non-zero, counts follow a **zero-truncated Negative Binomial distribution**, capturing overdispersed expression levels.
+
+This formulation explicitly separates biological absence from technical dropout, improving interpretability and model fit.
+
+## 2. Information Borrowing via Empirical Bayes
+
+Long-read RNA-seq data are often noisy, particularly for lowly expressed genes. To mitigate this, `LRDE` borrows strength across genes using an empirical Bayes strategy:
+
+- **Binning:**  
+  Genes are grouped into bins according to similar mean expression levels.
+
+- **Prior estimation:**  
+  Within each bin, empirical priors are estimated for:
+  - the dispersion parameter (\( \phi \))  
+  - the zero-component probability (treated as fixed during tagwise estimation and differential testing)
+
+- **Shrinkage:**  
+  Gene-specific (tag-wise) estimates are shrunk toward their bin-specific priors, resulting in more stable dispersion estimates and improved statistical power.
+
+## 3. Differential Expression Testing
+
+`LRDE` provides two complementary approaches for differential expression analysis:
+
+- **Likelihood Ratio Test (`hurdle_LRT()`)**  
+  Recommended for general hypothesis testing and comparison of nested models.
+
+- **Wald Test (`hurdle_Wald_Test()`)**  
+  A computationally efficient alternative for testing individual coefficients.
+
+# Data Structure
+The main object returned by `LRDE` is a list containing the following components:
+
+- `counts`: normalized count matrix  
+- `group`: sample group labels  
+- `size.factors`: normalization factors  
+- `tagwise.disp`: gene-wise dispersion estimates  
+- `zero_prob_matrix`: estimated zero probabilities for each group  
+- `lrt_stats`: likelihood ratio test statistics  
+- `wald_stats`: Wald test statistics  
+- `p.values`: p-values for differential expression  
+
+These components can be accessed directly using standard list indexing.
+`LRDE` also supports input from `SummarizedExperiment` objects, enabling integration with standard Bioconductor workflows.
+
+# Example Workflow
+
+This section demonstrates a minimal end-to-end workflow for differential expression analysis using `LRDE`.
+
+```{r}
+# Load the package
+suppressPackageStartupMessages(library(LRDE))
+
+set.seed(123)
+
+# 1. Simulate a count matrix (Negative Binomial)
+mat <- matrix(rnbinom(300, size = 5, mu = 5), nrow = 50)
+
+# Define sample groups
+grp <- factor(c("A", "A", "A", "B", "B", "B"))
+
+# 2. Prepare the data object
+y <- prepareDGE(mat, grp)
+
+# 3. Estimate size factors for normalization
+y <- sizeFactorsEst(y)
+
+# 4. Estimate tag-wise dispersions
+y <- tagwiseEst(y)
+
+# 5a. Differential expression testing: Wald test
+y <- hurdle_Wald_Test(y)
+
+# 5b. Differential expression testing: Likelihood Ratio Test
+y <- hurdle_LRT(y)
+
+# 6. Inspect results
+head(y$lrt_stats)        # LRT statistics per gene
+head(y$wald_stats)       # Wald statistics per gene
+head(y$p.values)         # p-values
+head(y$tagwise.disp)     # estimated dispersions
+str(y, max.level = 1)    # Data structure visualization
+```
+
+# Interpreting Results
+
+`LRDE` returns gene-level statistics for differential expression analysis, including test statistics and p-values.
+
+Genes with small p-values provide evidence against the null hypothesis of no differential expression between groups.
+
+## Multiple Testing Correction
+
+Since thousands of genes are typically tested simultaneously, it is important to control for multiple comparisons. A common approach is to control the **false discovery rate (FDR)** using the Benjamini–Hochberg method:
+
+```{r}
+padj <- p.adjust(y$p.values, method = "BH")
+head(padj)
+```
+
+Genes with adjusted p-values below a chosen threshold (e.g., FDR < 0.05) are typically considered significantly differentially expressed.
+
+# Session Information
+
+```{r}
+sessionInfo()
+```

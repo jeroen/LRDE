@@ -36,7 +36,6 @@ For each gene:
 }
 }
 \examples{
-\dontrun{
 set.seed(123)
 mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 grp <- c("A", "A", "A", "B", "B", "B")
@@ -44,6 +43,5 @@ y <- prepareDGE(mat, grp)
 y <- sizeFactorsEst(y)
 y <- tagwiseEst(y)
 y <- hurdle_Wald_Test(y)
-}
 
 }

@@ -43,13 +43,11 @@ The function automatically normalizes counts using the estimated size factors
 and stores gene-level normalized means in \code{baseMean}.
 }
 \examples{
-\dontrun{
 # Using a count matrix
 #' set.seed(123)
 mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 grp <- c("A", "A", "A", "B", "B", "B")
 y <- prepareDGE(mat, grp)
 y <- sizeFactorsEst(y, type = "poscounts")
-}
 
 }

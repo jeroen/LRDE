@@ -1,3 +1,5 @@
+#' @importFrom SummarizedExperiment assay
+NULL
 #' Prepare Count Data for Differential Expression Analysis
 #'
 #' Converts various supported input types to a standardized list format for downstream
@@ -21,7 +23,6 @@
 #' - Returns a list suitable for use with hurdle model-based DE functions.
 #'
 #' @examples
-#' \dontrun{
 #' # Example with a matrix
 #' set.seed(123)
 #' mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
@@ -31,7 +32,6 @@
 #' # Example with a SummarizedExperiment
 #' # se <- SummarizedExperiment::SummarizedExperiment(assays = list(counts = mat))
 #' # y <- prepareDGE(se, grp)
-#' }
 #'
 #' @export
 prepareDGE <- function(data, group) {
@@ -131,14 +131,12 @@ prepareDGE <- function(data, group) {
 #' and stores gene-level normalized means in \code{baseMean}.
 #'
 #' @examples
-#' \dontrun{
 #' # Using a count matrix
 #' #' set.seed(123)
 #' mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 #' grp <- c("A", "A", "A", "B", "B", "B")
 #' y <- prepareDGE(mat, grp)
 #' y <- sizeFactorsEst(y, type = "poscounts")
-#' }
 #'
 #' @importFrom stats median
 #' @export

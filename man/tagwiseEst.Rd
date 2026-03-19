@@ -29,7 +29,7 @@ This function performs the following steps:
 for each gene via \code{\link{priorEst}}.
 \item Fixes the zero probabilities and optimizes only the mean parameters
 and dispersion for each gene individually.
-\item Uses \code{\link{nll_hurdle_fixed_P}} internally to compute the negative
+\item Uses the internal function \code{nll_hurdle_fixed_P} to compute the negative
 log-likelihood with fixed zero probabilities.
 }
 
@@ -37,7 +37,6 @@ The resulting \code{tagwise.disp} will be used for downstream differential
 expression analysis.
 }
 \examples{
-\dontrun{
 set.seed(123)
 mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 grp <- c("A", "A", "A", "B", "B", "B")
@@ -46,6 +45,5 @@ y <- sizeFactorsEst(y)
 y <- tagwiseEst(y)
 head(y$tagwise.disp)
 head(y$zero_prob_matrix)
-}
 
 }

@@ -22,7 +22,7 @@ NULL
 #' @return Numeric scalar: negative log-likelihood.
 #'
 #' @keywords internal
-
+#' @noRd
 nll_hurdle <- function(params, counts, groups, offset = NULL, priors = NULL){
   eps <- 1e-12
 
@@ -305,6 +305,7 @@ priorEst <- function(y, n_bins = NULL) {
 #' }
 #'
 #' @keywords internal
+#' @noRd
 nll_hurdle_fixed_P <- function(params, counts, groups, offset = NULL, priors = NULL){
   eps <- 1e-12
 
@@ -395,7 +396,7 @@ nll_hurdle_fixed_P <- function(params, counts, groups, offset = NULL, priors = N
 #'         for each gene via \code{\link{priorEst}}.
 #'   \item Fixes the zero probabilities and optimizes only the mean parameters
 #'         and dispersion for each gene individually.
-#'   \item Uses \code{\link{nll_hurdle_fixed_P}} internally to compute the negative
+#'   \item Uses the internal function \code{nll_hurdle_fixed_P} to compute the negative
 #'         log-likelihood with fixed zero probabilities.
 #' }
 #'
@@ -403,7 +404,6 @@ nll_hurdle_fixed_P <- function(params, counts, groups, offset = NULL, priors = N
 #' expression analysis.
 #'
 #' @examples
-#' \dontrun{
 #' set.seed(123)
 #' mat <- matrix(rnbinom(30, size = 5, mu = 5), nrow = 5)
 #' grp <- c("A", "A", "A", "B", "B", "B")
@@ -412,7 +412,6 @@ nll_hurdle_fixed_P <- function(params, counts, groups, offset = NULL, priors = N
 #' y <- tagwiseEst(y)
 #' head(y$tagwise.disp)
 #' head(y$zero_prob_matrix)
-#' }
 #'
 #' @export
 tagwiseEst <- function(y) {
