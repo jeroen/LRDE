@@ -421,7 +421,7 @@ tagwiseEst <- function(y) {
 
   tagwise.dispersions <- rep(NA_real_, n_row)
 
-  for (i in 1:n_row) {
+  for (i in seq_len(n_row)) {
     # Prepare data for current gene
     my_counts <- as.vector(t(y2$counts[i, ]))
     my_groups <- factor(y2$samples$group)

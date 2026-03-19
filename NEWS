@@ -1,0 +1,16 @@
+Changes in version 0.99.0
+
+    o Initial Bioconductor submission of LRDE.
+
+    o Implements a hurdle negative binomial (Hurdle-NB) model for 
+      differential expression analysis of long-read RNA-seq data.
+
+    o Includes:
+        - Data preparation (prepareDGE)
+        - Size factor estimation (sizeFactorsEst)
+        - Tag-wise dispersion estimation (tagwiseEst)
+        - Differential expression testing via:
+            * Likelihood Ratio Test (hurdle_LRT)
+            * Wald Test (hurdle_Wald_Test)
+
+    o Supports matrix, data.frame, and SummarizedExperiment inputs.

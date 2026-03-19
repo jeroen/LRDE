@@ -134,7 +134,7 @@ hurdle_LRT <- function(y){
   offsets       <- y$samples$size.factor
   levs          <- levels(groups_factor)
 
-  for (i in 1:n_row) {
+  for (i in seq_len(n_row)) {
     current_counts <- as.numeric(y$counts[i, ])
     current_phi <- 1 / y$tagwise.disp[i]
 
@@ -204,8 +204,8 @@ hurdle_LRT <- function(y){
       }
 
     }, error = function(e) {
-      lrt_stats[i] <<- NA
-      p_values[i]  <<- NA
+      lrt_stats[i] <- NA
+      p_values[i] <- NA
     })
   }
 
@@ -264,7 +264,7 @@ hurdle_Wald_Test <- function(y) {
   offsets       <- y$samples$size.factor
   levs          <- levels(groups_factor)
 
-  for (i in 1:n_row) {
+  for (i in seq_len(n_row)) {
     current_counts <- as.numeric(y$counts[i, ])
     current_phi <- 1 / y$tagwise.disp[i]
     f_theta_A <- 1 - y$zero_prob_matrix[i, "prob_A"]

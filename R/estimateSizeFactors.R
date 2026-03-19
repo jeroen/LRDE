@@ -53,9 +53,9 @@ prepareDGE <- function(data, group) {
     data <- as.matrix(data)
 
   } else if (!is.matrix(data)) {
-    stop(paste(
-      "'data' must be one of: matrix, data.frame, DGEList,",
-      "DESeqDataSet, or SummarizedExperiment."
+    stop(sprintf(
+      "'data' must be one of: matrix, data.frame, DGEList, %s, or SummarizedExperiment.",
+      "DESeqDataSet"
     ))
   }
 

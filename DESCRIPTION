@@ -17,10 +17,14 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    BiocGenerics
-biocViews: Software, DifferentialExpression, Sequencing, RNASeq, GeneExpression, Regression
+    BiocGenerics,
+    testthat (>= 3.0.0)
+biocViews: Software, DifferentialExpression, Sequencing, RNASeq, LongRead, GeneExpression, Regression
+URL: https://github.com/ziyang773/LRDE
+BugReports: https://github.com/ziyang773/LRDE/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
+Config/testthat/edition: 3
