@@ -10,7 +10,7 @@ author:
 package: LRDE
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{LRDE}
+  %\VignetteIndexEntry{Introduction to LRDE}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
